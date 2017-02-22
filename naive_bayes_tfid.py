@@ -49,8 +49,17 @@ def main():
     #tee="loving new IOS 5 upgrade iPhone"
     #print(classifier.classify(extract_features(tee.split())))
 
+    refsets = collections.defaultdict(set)
+    testsets = collections.defaultdict(set)
+
+    for i, (feats, label) in enumerate(v_test):
+        refsets[label].add(i)
+        observed = classifier.classify(extract_features(feats.split()))
+        testsets[observed].add(i)
+    print 'pos precision:', (float)(len(testsets['positive'])/len(refsets['positive']))
     #plot confusion matrix and accuracy of the model
-    create_confussion_matrix(v_test,classifier)
+    #create_confussion_matrix(v_test,classifier)
+
 
 
 def get_words(tweet_set):
@@ -79,6 +88,8 @@ def create_confussion_matrix(v_test,classifier):
     print(confussion_matrix)
     accuracy=(float)(confussion_matrix._correct)/confussion_matrix._total
     print("Accuracy:",accuracy)
+
+
 
 
 
